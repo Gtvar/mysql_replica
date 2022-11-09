@@ -1,0 +1,52 @@
+version: '3'
+services:
+  mysql-m:
+    platform: linux/amd64
+    image: mysql:latest
+    restart: always
+    container_name: mysql_m
+    env_file: ./master/configuration.env
+    volumes:
+      - ./master/log/mysql-bin.log:/var/log/mysql/mysql-bin.log
+      - ./master/data:/var/lib/mysql
+      - ./master/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+    ports:
+      - 33061:3306
+    networks:
+      - mysql-cluster
+  mysql-s1:
+    platform: linux/amd64
+    image: mysql:latest
+    restart: always
+    container_name: mysql_s1
+    env_file: ./slave1/configuration.env
+    volumes:
+      - ./master/log/mysql-bin.log:/var/log/mysql/mysql-bin.log
+      - ./slave1/data:/var/lib/mysql
+      - ./slave1/conf:/etc/mysql/conf.d
+    ports:
+      - 33071:3306
+    networks:
+      - mysql-cluster
+  mysql-s2:
+    platform: linux/amd64
+    image: mysql:latest
+    restart: always
+    container_name: mysql_s2
+    env_file: ./slave2/configuration.env
+    volumes:
+      - ./master/log/mysql-bin.log:/var/log/mysql/mysql-bin.log
+      - ./slave2/data:/var/lib/mysql
+      - ./slave2/conf:/etc/mysql/conf.d
+    ports:
+      - 33081:3306
+    networks:
+      - mysql-cluster
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  mysql-cluster:
+    driver: bridge

@@ -1,0 +1,6 @@
+[mysqld]
+server-id = 1
+binlog-format = mixed
+sync_binlog = 1
+binlog_do_db = yk
+log_bin = /var/log/mysql/mysql-bin.log

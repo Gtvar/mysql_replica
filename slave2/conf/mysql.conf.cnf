@@ -1,0 +1,7 @@
+[mysqld]
+server-id = 3
+log_bin = 1
+binlog-format = mixed
+binlog_do_db = yk
+relay-log = /var/log/mysql/mysql-relay-bin.log
+log_bin = /var/log/mysql/mysql-bin.log
